@@ -11,7 +11,9 @@ import Detection from "./pages/Detection";
 import Simulation from "./pages/Simulation";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import { EmergencySOS } from "./components/emergency/EmergencySOS";
 
 const queryClient = new QueryClient();
 
@@ -30,8 +32,11 @@ const App = () => (
             <Route path="/detection" element={<Detection />} />
             <Route path="/simulation" element={<Simulation />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          {/* Global Emergency SOS Button */}
+          <EmergencySOS />
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

@@ -4,7 +4,7 @@ import { AlertBanner } from '@/components/alerts/AlertBanner';
 import { FloodMap } from '@/components/maps/FloodMap';
 import { WeatherCard } from '@/components/weather/WeatherCard';
 import { FloodProbability } from '@/components/forecast/FloodProbability';
-import { EmergencySOS } from '@/components/emergency/EmergencySOS';
+import { EmergencySOS } from '@/components/emergency/EmergencySOSPanel';
 import { StatCard } from '@/components/ui/StatCard';
 import { useAppStore } from '@/store/useAppStore';
 

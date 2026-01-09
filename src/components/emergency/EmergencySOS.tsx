@@ -1,73 +1,88 @@
-import { Phone, Hospital, Shield, Flame, AlertTriangle, ExternalLink } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { Phone, AlertTriangle, Ambulance, Shield, Flame, Users, MapPin } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { cn } from '@/lib/utils';
 
-const emergencyContacts = [
-  { name: 'National Disaster Response Force', number: '011-24363260', icon: Shield, description: 'NDRF Emergency Helpline' },
-  { name: 'Police Emergency', number: '100', icon: Shield, description: 'Police Control Room' },
-  { name: 'Fire Emergency', number: '101', icon: Flame, description: 'Fire Department' },
-  { name: 'Medical Emergency', number: '102', icon: Hospital, description: 'Ambulance Service' },
-  { name: 'National Emergency', number: '112', icon: AlertTriangle, description: 'Unified Emergency Number' },
-];
-
-const safetyTips = [
-  'Move to higher ground immediately if flooding begins',
-  'Avoid walking or driving through flood waters',
-  'Turn off electricity at the main switch if flooding is imminent',
-  'Keep emergency supplies ready (water, food, medicines)',
-  'Stay informed through official channels and alerts',
+const emergencyNumbers = [
+  { icon: AlertTriangle, name: 'National Emergency', number: '112', color: 'bg-red-500' },
+  { icon: Ambulance, name: 'Ambulance', number: '108', color: 'bg-green-500' },
+  { icon: Shield, name: 'Police', number: '100', color: 'bg-blue-500' },
+  { icon: Flame, name: 'Fire', number: '101', color: 'bg-orange-500' },
+  { icon: Users, name: 'NDRF Helpline', number: '011-24363260', color: 'bg-purple-500' },
+  { icon: MapPin, name: 'Disaster Mgmt', number: '1078', color: 'bg-teal-500' },
 ];
 
 export function EmergencySOS() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isPulsing, setIsPulsing] = useState(true);
+
+  const handleCall = (number: string) => {
+    window.location.href = `tel:${number}`;
+  };
+
   return (
-    <div className="stat-card border-risk-severe/20 bg-gradient-to-br from-card to-risk-severe/5 animate-fade-in">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 rounded-lg bg-risk-severe/20">
-          <Phone className="w-5 h-5 text-risk-severe" />
-        </div>
-        <div>
-          <h3 className="text-lg font-semibold">Emergency SOS</h3>
-          <p className="text-sm text-muted-foreground">India Emergency Contacts</p>
-        </div>
-      </div>
-      
-      <div className="space-y-2 mb-6">
-        {emergencyContacts.map((contact) => (
-          <a
-            key={contact.number}
-            href={`tel:${contact.number}`}
-            className="flex items-center gap-3 p-3 bg-secondary/50 rounded-lg hover:bg-secondary transition-colors group"
-          >
-            <contact.icon className="w-5 h-5 text-muted-foreground group-hover:text-neer-sky transition-colors" />
-            <div className="flex-1">
-              <p className="font-medium text-sm">{contact.name}</p>
-              <p className="text-xs text-muted-foreground">{contact.description}</p>
-            </div>
-            <span className="font-bold text-neer-sky">{contact.number}</span>
-          </a>
-        ))}
-      </div>
-      
-      <div className="border-t border-border pt-4">
-        <h4 className="text-sm font-medium mb-3 flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-risk-moderate" />
-          Safety Guidelines
-        </h4>
-        <ul className="space-y-2">
-          {safetyTips.map((tip, index) => (
-            <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-risk-moderate mt-2 flex-shrink-0" />
-              {tip}
-            </li>
-          ))}
-        </ul>
-      </div>
-      
-      <Button variant="outline" className="w-full mt-4" asChild>
-        <a href="https://ndma.gov.in" target="_blank" rel="noopener noreferrer">
-          <ExternalLink className="w-4 h-4" />
-          NDMA Official Website
-        </a>
-      </Button>
-    </div>
+    <>
+      {/* Floating SOS Button */}
+      <button
+        onClick={() => {
+          setIsOpen(true);
+          setIsPulsing(false);
+        }}
+        className={cn(
+          "fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full",
+          "bg-gradient-to-br from-red-500 to-red-600 text-white shadow-2xl",
+          "flex items-center justify-center transition-all duration-300",
+          "hover:scale-110 hover:shadow-red-500/50 hover:shadow-2xl",
+          "focus:outline-none focus:ring-4 focus:ring-red-500/50",
+          isPulsing && "animate-pulse"
+        )}
+        aria-label="Emergency SOS"
+      >
+        <div className="absolute inset-0 rounded-full bg-red-500 animate-ping opacity-25" />
+        <Phone className="w-7 h-7 relative z-10" />
+      </button>
+
+      {/* Emergency Dialog */}
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="sm:max-w-md bg-card border-border">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-xl text-destructive">
+              <AlertTriangle className="w-6 h-6" />
+              Emergency Helplines
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-3 mt-4">
+            {emergencyNumbers.map((item) => (
+              <button
+                key={item.number}
+                onClick={() => handleCall(item.number)}
+                className={cn(
+                  "w-full flex items-center gap-4 p-4 rounded-xl",
+                  "bg-muted/50 hover:bg-muted transition-colors",
+                  "border border-border hover:border-primary/30"
+                )}
+              >
+                <div className={cn("p-3 rounded-full", item.color)}>
+                  <item.icon className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex-1 text-left">
+                  <p className="font-medium text-foreground">{item.name}</p>
+                  <p className="text-lg font-bold text-primary">{item.number}</p>
+                </div>
+                <Phone className="w-5 h-5 text-muted-foreground" />
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-4 p-4 bg-destructive/10 rounded-xl border border-destructive/20">
+            <p className="text-sm text-destructive font-medium flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4" />
+              Stay calm and provide your exact location when calling
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
