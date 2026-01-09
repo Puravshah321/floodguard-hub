@@ -11,7 +11,9 @@ const navLinks = [
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/forecast', label: 'Forecast' },
   { href: '/detection', label: 'Detection' },
+  { href: '/contribute', label: 'Contribute' },
   { href: '/simulation', label: 'Simulation' },
+  { href: '/leaderboard', label: 'Leaderboard' },
 ];
 
 export function Header() {
