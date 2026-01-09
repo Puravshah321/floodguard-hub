@@ -12,6 +12,7 @@ import Simulation from "./pages/Simulation";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import Settings from "./pages/Settings";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import { EmergencySOS } from "./components/emergency/EmergencySOS";
 
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/simulation" element={<Simulation />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           {/* Global Emergency SOS Button */}
