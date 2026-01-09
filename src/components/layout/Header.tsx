@@ -1,5 +1,4 @@
 import { Link, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { Bell, Menu, User, Shield, Droplets } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -15,16 +14,14 @@ const navLinks = [
 
 export function Header() {
   const location = useLocation();
-  const { alerts, user, toggleSidebar } = useAppStore();
+  const { alerts, toggleSidebar } = useAppStore();
   const unreadAlerts = alerts.filter((a) => !a.isRead).length;
   
   const isLanding = location.pathname === '/';
   
   return (
-    <motion.header
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      className={`fixed top-0 left-0 right-0 z-50 ${
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 animate-fade-in ${
         isLanding 
           ? 'bg-transparent' 
           : 'bg-card/80 backdrop-blur-xl border-b border-border'
@@ -111,6 +108,6 @@ export function Header() {
           </div>
         </div>
       </div>
-    </motion.header>
+    </header>
   );
 }

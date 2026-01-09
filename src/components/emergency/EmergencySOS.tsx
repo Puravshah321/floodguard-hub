@@ -1,38 +1,12 @@
-import { motion } from 'framer-motion';
 import { Phone, Hospital, Shield, Flame, AlertTriangle, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const emergencyContacts = [
-  { 
-    name: 'National Disaster Response Force', 
-    number: '011-24363260', 
-    icon: Shield,
-    description: 'NDRF Emergency Helpline'
-  },
-  { 
-    name: 'Police Emergency', 
-    number: '100', 
-    icon: Shield,
-    description: 'Police Control Room'
-  },
-  { 
-    name: 'Fire Emergency', 
-    number: '101', 
-    icon: Flame,
-    description: 'Fire Department'
-  },
-  { 
-    name: 'Medical Emergency', 
-    number: '102', 
-    icon: Hospital,
-    description: 'Ambulance Service'
-  },
-  { 
-    name: 'National Emergency', 
-    number: '112', 
-    icon: AlertTriangle,
-    description: 'Unified Emergency Number'
-  },
+  { name: 'National Disaster Response Force', number: '011-24363260', icon: Shield, description: 'NDRF Emergency Helpline' },
+  { name: 'Police Emergency', number: '100', icon: Shield, description: 'Police Control Room' },
+  { name: 'Fire Emergency', number: '101', icon: Flame, description: 'Fire Department' },
+  { name: 'Medical Emergency', number: '102', icon: Hospital, description: 'Ambulance Service' },
+  { name: 'National Emergency', number: '112', icon: AlertTriangle, description: 'Unified Emergency Number' },
 ];
 
 const safetyTips = [
@@ -45,11 +19,7 @@ const safetyTips = [
 
 export function EmergencySOS() {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="stat-card border-risk-severe/20 bg-gradient-to-br from-card to-risk-severe/5"
-    >
+    <div className="stat-card border-risk-severe/20 bg-gradient-to-br from-card to-risk-severe/5 animate-fade-in">
       <div className="flex items-center gap-3 mb-6">
         <div className="p-2 rounded-lg bg-risk-severe/20">
           <Phone className="w-5 h-5 text-risk-severe" />
@@ -60,15 +30,11 @@ export function EmergencySOS() {
         </div>
       </div>
       
-      {/* Emergency Contacts */}
       <div className="space-y-2 mb-6">
-        {emergencyContacts.map((contact, index) => (
-          <motion.a
+        {emergencyContacts.map((contact) => (
+          <a
             key={contact.number}
             href={`tel:${contact.number}`}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.05 }}
             className="flex items-center gap-3 p-3 bg-secondary/50 rounded-lg hover:bg-secondary transition-colors group"
           >
             <contact.icon className="w-5 h-5 text-muted-foreground group-hover:text-neer-sky transition-colors" />
@@ -77,11 +43,10 @@ export function EmergencySOS() {
               <p className="text-xs text-muted-foreground">{contact.description}</p>
             </div>
             <span className="font-bold text-neer-sky">{contact.number}</span>
-          </motion.a>
+          </a>
         ))}
       </div>
       
-      {/* Safety Tips */}
       <div className="border-t border-border pt-4">
         <h4 className="text-sm font-medium mb-3 flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 text-risk-moderate" />
@@ -89,10 +54,7 @@ export function EmergencySOS() {
         </h4>
         <ul className="space-y-2">
           {safetyTips.map((tip, index) => (
-            <li 
-              key={index}
-              className="text-sm text-muted-foreground flex items-start gap-2"
-            >
+            <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-risk-moderate mt-2 flex-shrink-0" />
               {tip}
             </li>
@@ -100,17 +62,12 @@ export function EmergencySOS() {
         </ul>
       </div>
       
-      {/* More Resources */}
-      <Button
-        variant="outline"
-        className="w-full mt-4"
-        asChild
-      >
+      <Button variant="outline" className="w-full mt-4" asChild>
         <a href="https://ndma.gov.in" target="_blank" rel="noopener noreferrer">
           <ExternalLink className="w-4 h-4" />
           NDMA Official Website
         </a>
       </Button>
-    </motion.div>
+    </div>
   );
 }

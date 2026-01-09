@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
 import type { LucideIcon } from 'lucide-react';
 
 interface StatCardProps {
@@ -41,11 +40,7 @@ export function StatCard({
   className 
 }: StatCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={cn('stat-card', variantStyles[variant], className)}
-    >
+    <div className={cn('stat-card animate-fade-in', variantStyles[variant], className)}>
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <p className="text-sm text-muted-foreground font-medium">{title}</p>
@@ -68,6 +63,6 @@ export function StatCard({
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }

@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Cloud, Droplets, Wind, Gauge, Thermometer, MapPin, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAppStore } from '@/store/useAppStore';
@@ -36,14 +35,12 @@ export function WeatherCard() {
   };
   
   useEffect(() => {
-    // Try to get user location on mount
     if (!userLocation && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           setUserLocation({ lat: pos.coords.latitude, lon: pos.coords.longitude });
         },
         () => {
-          // Default to Delhi if geolocation fails
           setUserLocation({ lat: 28.6139, lon: 77.2090 });
         }
       );
@@ -70,11 +67,7 @@ export function WeatherCard() {
   }
   
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="stat-card"
-    >
+    <div className="stat-card animate-fade-in">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4 text-neer-sky" />
@@ -137,6 +130,6 @@ export function WeatherCard() {
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
