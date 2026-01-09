@@ -11,6 +11,7 @@ import Detection from "./pages/Detection";
 import Contribute from "./pages/Contribute";
 import Simulation from "./pages/Simulation";
 import Leaderboard from "./pages/Leaderboard";
+import GlobalFloodRiskMap from "./pages/GlobalFloodRiskMap";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import Settings from "./pages/Settings";
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/contribute" element={<Contribute />} />
             <Route path="/simulation" element={<Simulation />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/global-flood-map" element={<GlobalFloodRiskMap />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/profile" element={<Profile />} />

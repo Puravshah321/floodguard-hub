@@ -13,6 +13,7 @@ const navLinks = [
   { href: '/detection', label: 'Detection' },
   { href: '/contribute', label: 'Contribute' },
   { href: '/simulation', label: 'Simulation' },
+  { href: '/global-flood-map', label: 'Global Map' },
   { href: '/leaderboard', label: 'Leaderboard' },
 ];
 
