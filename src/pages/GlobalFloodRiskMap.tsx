@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Header } from '@/components/layout/Header';
 import { GlobalFloodMap } from '@/components/maps/GlobalFloodMap';
-import { Globe2, Droplets, AlertTriangle, Info } from 'lucide-react';
+import { Globe2, Droplets, AlertTriangle, Info, Bell, Layers, BarChart3 } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { RISK_LEVELS } from '@/lib/floodRisk';
@@ -35,6 +35,10 @@ export default function GlobalFloodRiskMap() {
                   <Droplets className="w-4 h-4 text-primary" />
                   <span>Live Data</span>
                 </Badge>
+                <Badge variant="outline" className="gap-2 py-2 px-3">
+                  <Bell className="w-4 h-4 text-primary" />
+                  <span>Alerts</span>
+                </Badge>
                 <button
                   onClick={() => setShowInfo(!showInfo)}
                   className="p-2 rounded-lg hover:bg-secondary transition-colors"
@@ -47,7 +51,7 @@ export default function GlobalFloodRiskMap() {
             {/* Info Panel */}
             {showInfo && (
               <Card className="mt-4 p-4 bg-card/50 backdrop-blur-sm animate-fade-in">
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                   <div className="flex items-start gap-3">
                     <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center flex-shrink-0">
                       <div className="w-4 h-4 rounded-full bg-green-500" />
@@ -85,6 +89,31 @@ export default function GlobalFloodRiskMap() {
                     </div>
                   </div>
                 </div>
+                
+                {/* Features Info */}
+                <div className="grid md:grid-cols-3 gap-4 pt-4 border-t border-border">
+                  <div className="flex items-center gap-3">
+                    <Layers className="w-5 h-5 text-primary" />
+                    <div>
+                      <p className="text-sm font-medium">Heatmap View</p>
+                      <p className="text-xs text-muted-foreground">Toggle between circle and heatmap layers</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <BarChart3 className="w-5 h-5 text-primary" />
+                    <div>
+                      <p className="text-sm font-medium">Trend Analysis</p>
+                      <p className="text-xs text-muted-foreground">View 14-day history and 7-day forecast</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Bell className="w-5 h-5 text-primary" />
+                    <div>
+                      <p className="text-sm font-medium">Push Alerts</p>
+                      <p className="text-xs text-muted-foreground">Get notified for extreme risks</p>
+                    </div>
+                  </div>
+                </div>
               </Card>
             )}
           </div>
@@ -111,9 +140,15 @@ export default function GlobalFloodRiskMap() {
                 ))}
               </div>
               
-              <div className="flex items-center gap-2 text-xs text-muted-foreground whitespace-nowrap">
-                <AlertTriangle className="w-4 h-4" />
-                <span>Data refreshes automatically every 5 minutes</span>
+              <div className="flex items-center gap-4 text-xs text-muted-foreground whitespace-nowrap">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4" />
+                  <span>Auto-refresh: 5 min</span>
+                </div>
+                <div className="hidden md:flex items-center gap-2">
+                  <Bell className="w-4 h-4" />
+                  <span>Click zones for alerts</span>
+                </div>
               </div>
             </div>
           </div>

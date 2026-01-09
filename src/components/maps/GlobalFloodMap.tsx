@@ -2,6 +2,9 @@ import { Suspense, lazy, useEffect, useState, Component, ReactNode } from 'react
 import { Loader2, AlertTriangle, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MeteostatDataPoint, fetchGlobalPrecipitationData } from '@/lib/meteostat';
+import { useFloodAlerts } from '@/hooks/useFloodAlerts';
+import { PrecipitationChart } from './PrecipitationChart';
+import { SavedLocationsPanel } from './SavedLocationsPanel';
 
 // Error boundary to handle dynamic import failures
 class MapErrorBoundary extends Component<
@@ -45,6 +48,19 @@ export function GlobalFloodMap({ className }: GlobalFloodMapProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<MeteostatDataPoint | null>(null);
+  const [showSavedLocations, setShowSavedLocations] = useState(false);
+
+  const {
+    savedLocations,
+    notificationPermission,
+    requestNotificationPermission,
+    addSavedLocation,
+    removeSavedLocation,
+    toggleLocationNotifications,
+    checkExtremeRisks,
+    isLocationSaved,
+  } = useFloodAlerts();
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -53,6 +69,9 @@ export function GlobalFloodMap({ className }: GlobalFloodMapProps) {
       const precipitationData = await fetchGlobalPrecipitationData();
       setData(precipitationData);
       setLastUpdated(new Date());
+      
+      // Check for extreme risks after fetching new data
+      checkExtremeRisks(precipitationData);
     } catch (err) {
       setError('Failed to fetch precipitation data. Please try again.');
       console.error(err);
@@ -69,6 +88,31 @@ export function GlobalFloodMap({ className }: GlobalFloodMapProps) {
     const interval = setInterval(fetchData, 5 * 60 * 1000);
     return () => clearInterval(interval);
   }, []);
+
+  // Check for extreme risks whenever data changes
+  useEffect(() => {
+    if (data.length > 0) {
+      checkExtremeRisks(data);
+    }
+  }, [data, checkExtremeRisks]);
+
+  const handleLocationClick = (point: MeteostatDataPoint) => {
+    setSelectedLocation(point);
+  };
+
+  const handleWatchLocation = (point: MeteostatDataPoint) => {
+    if (isLocationSaved(point.lat, point.lon)) {
+      // Already saved, could show a toast
+      return;
+    }
+    
+    addSavedLocation({
+      name: point.location,
+      lat: point.lat,
+      lon: point.lon,
+      notificationsEnabled: notificationPermission === 'granted',
+    });
+  };
 
   const loadingFallback = (
     <div className="w-full h-full bg-muted/50 flex flex-col items-center justify-center rounded-xl">
@@ -121,12 +165,58 @@ export function GlobalFloodMap({ className }: GlobalFloodMapProps) {
           </div>
         </div>
       )}
+
+      {/* Saved Locations Button */}
+      <button
+        onClick={() => setShowSavedLocations(!showSavedLocations)}
+        className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000] bg-card/90 backdrop-blur-sm rounded-lg px-4 py-2 shadow-lg border border-border flex items-center gap-2 hover:bg-card transition-colors"
+      >
+        <span className="text-sm font-medium text-foreground">
+          Saved Locations
+        </span>
+        {savedLocations.length > 0 && (
+          <span className="bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
+            {savedLocations.length}
+          </span>
+        )}
+      </button>
       
       <MapErrorBoundary fallback={errorFallback} onRetry={fetchData}>
         <Suspense fallback={loadingFallback}>
-          <WorldMapContent data={data} isLoading={isLoading} onRefresh={fetchData} />
+          <WorldMapContent 
+            data={data} 
+            isLoading={isLoading} 
+            onRefresh={fetchData}
+            onLocationClick={handleLocationClick}
+            onWatchLocation={handleWatchLocation}
+            isLocationSaved={isLocationSaved}
+          />
         </Suspense>
       </MapErrorBoundary>
+
+      {/* Precipitation Chart Modal */}
+      {selectedLocation && (
+        <PrecipitationChart
+          location={selectedLocation.location}
+          lat={selectedLocation.lat}
+          lon={selectedLocation.lon}
+          currentPrecipitation={selectedLocation.precipitation}
+          onClose={() => setSelectedLocation(null)}
+        />
+      )}
+
+      {/* Saved Locations Panel */}
+      {showSavedLocations && (
+        <SavedLocationsPanel
+          savedLocations={savedLocations}
+          data={data}
+          onRemove={removeSavedLocation}
+          onToggleNotifications={toggleLocationNotifications}
+          onClose={() => setShowSavedLocations(false)}
+          notificationPermission={notificationPermission}
+          onRequestPermission={requestNotificationPermission}
+        />
+      )}
     </div>
   );
 }
