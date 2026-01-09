@@ -1,8 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Bell, Menu, User, Shield, Droplets } from 'lucide-react';
+import { Bell, Menu, Droplets } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useAppStore } from '@/store/useAppStore';
+import { UserDropdown } from './UserDropdown';
+import { useAuth } from '@/contexts/AuthContext';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -15,6 +17,7 @@ const navLinks = [
 export function Header() {
   const location = useLocation();
   const { alerts, toggleSidebar } = useAppStore();
+  const { isAuthenticated } = useAuth();
   const unreadAlerts = alerts.filter((a) => !a.isRead).length;
   
   const isLanding = location.pathname === '/';
@@ -23,7 +26,7 @@ export function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 animate-fade-in ${
         isLanding 
-          ? 'bg-transparent' 
+          ? 'bg-black/10 backdrop-blur-md' 
           : 'bg-card/80 backdrop-blur-xl border-b border-border'
       }`}
     >
@@ -64,43 +67,30 @@ export function Header() {
           
           {/* Actions */}
           <div className="flex items-center gap-2">
-            {/* Alerts */}
-            <Button
-              variant={isLanding ? 'heroOutline' : 'ghost'}
-              size="icon"
-              className="relative"
-            >
-              <Bell className="w-5 h-5" />
-              {unreadAlerts > 0 && (
-                <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center bg-risk-severe text-white text-xs">
-                  {unreadAlerts}
-                </Badge>
-              )}
-            </Button>
-            
-            {/* Admin Link */}
-            <Link to="/admin">
+            {/* Alerts - only show when authenticated */}
+            {isAuthenticated && (
               <Button
                 variant={isLanding ? 'heroOutline' : 'ghost'}
                 size="icon"
+                className={`relative ${isLanding ? 'text-white border-white/30 hover:bg-white/10' : ''}`}
               >
-                <Shield className="w-5 h-5" />
+                <Bell className="w-5 h-5" />
+                {unreadAlerts > 0 && (
+                  <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center bg-risk-severe text-white text-xs">
+                    {unreadAlerts}
+                  </Badge>
+                )}
               </Button>
-            </Link>
+            )}
             
-            {/* User */}
-            <Button
-              variant={isLanding ? 'heroOutline' : 'ghost'}
-              size="icon"
-            >
-              <User className="w-5 h-5" />
-            </Button>
+            {/* User Dropdown / Auth Buttons */}
+            <UserDropdown isLanding={isLanding} />
             
             {/* Mobile Menu */}
             <Button
               variant={isLanding ? 'heroOutline' : 'ghost'}
               size="icon"
-              className="md:hidden"
+              className={`md:hidden ${isLanding ? 'text-white border-white/30 hover:bg-white/10' : ''}`}
               onClick={toggleSidebar}
             >
               <Menu className="w-5 h-5" />

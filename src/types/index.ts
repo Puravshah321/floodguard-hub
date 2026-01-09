@@ -61,6 +61,10 @@ export interface User {
   name: string;
   role: 'user' | 'admin';
   location?: Location;
+  avatar?: string;
+  bio?: string;
+  phone?: string;
+  joinedAt?: Date;
 }
 
 export interface SimulationParams {
