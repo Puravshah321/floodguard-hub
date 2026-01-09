@@ -84,15 +84,15 @@ export default function Landing() {
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
+              <Link to="/auth">
+                <Button variant="heroOutline" size="xl">
+                  <Shield className="w-5 h-5" />
+                  Login / Sign Up
+                </Button>
+              </Link>
               <Link to="/detection">
                 <Button variant="heroOutline" size="xl">
                   <Satellite className="w-5 h-5" />
-                  Report Conditions
-                </Button>
-              </Link>
-              <Link to="/admin">
-                <Button variant="heroOutline" size="xl">
-                  <Shield className="w-5 h-5" />
                   Admin Dashboard
                 </Button>
               </Link>
