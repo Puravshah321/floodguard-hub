@@ -8,7 +8,9 @@ import Landing from "./pages/Landing";
 import Dashboard from "./pages/Dashboard";
 import Forecast from "./pages/Forecast";
 import Detection from "./pages/Detection";
+import Contribute from "./pages/Contribute";
 import Simulation from "./pages/Simulation";
+import Leaderboard from "./pages/Leaderboard";
 import Admin from "./pages/Admin";
 import Auth from "./pages/Auth";
 import Settings from "./pages/Settings";
@@ -31,7 +33,9 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/forecast" element={<Forecast />} />
             <Route path="/detection" element={<Detection />} />
+            <Route path="/contribute" element={<Contribute />} />
             <Route path="/simulation" element={<Simulation />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/profile" element={<Profile />} />
