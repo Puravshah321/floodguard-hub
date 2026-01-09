@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Header } from '@/components/layout/Header';
 import { useAppStore } from '@/store/useAppStore';
 import { RiskBadge } from '@/components/ui/RiskBadge';
+import FloodScene from '@/components/3d/FloodScene';
 
 const features = [
   { icon: BarChart3, title: 'Real-Time Forecasting', description: 'AI-powered flood predictions using live weather data and historical patterns' },
@@ -37,31 +38,39 @@ export default function Landing() {
     <div className="min-h-screen">
       <Header />
       
-      {/* Hero Section */}
+      {/* Hero Section with 3D Animation */}
       <section className="relative min-h-screen flex items-center justify-center bg-hero-pattern overflow-hidden">
-        {/* Animated Background */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-neer-sky/20 rounded-full blur-3xl animate-pulse-slow" />
-          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-neer-teal/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
+        {/* 3D Flood Scene Background */}
+        <FloodScene />
+        
+        {/* Animated Background Overlay */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[hsl(var(--neer-sky)/0.15)] rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-[hsl(var(--neer-teal)/0.15)] rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[hsl(var(--neer-water)/0.1)] rounded-full blur-3xl" />
         </div>
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center animate-fade-in">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-8">
-              <span className="w-2 h-2 bg-risk-low rounded-full animate-pulse" />
+              <span className="w-2 h-2 bg-[hsl(var(--risk-low))] rounded-full animate-pulse" />
               <span className="text-sm text-white/90">Live monitoring active across India</span>
             </div>
             
-            {/* Logo & Title */}
+            {/* Logo & Title with 3D effect */}
             <div className="flex items-center justify-center gap-4 mb-6">
-              <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <Droplets className="w-10 h-10 text-white" />
+              <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-2xl border border-white/30 animate-scale-in">
+                <Droplets className="w-12 h-12 text-white drop-shadow-lg" />
               </div>
-              <h1 className="text-6xl md:text-7xl font-bold text-white">नीरOrbit</h1>
+              <h1 className="text-6xl md:text-8xl font-bold text-white drop-shadow-2xl">
+                नीरOrbit
+              </h1>
             </div>
             
-            <p className="text-2xl md:text-3xl text-white/90 font-light mb-4">Predict • Prepare • Protect</p>
+            <p className="text-2xl md:text-3xl text-white/90 font-light mb-4 drop-shadow-lg">
+              Predict • Prepare • Protect
+            </p>
             
             <p className="text-lg text-white/70 max-w-2xl mx-auto mb-10">
               AI-powered flood intelligence system for India. Real-time predictions, satellite analysis, and community-driven alerts to safeguard lives and livelihoods.
@@ -90,7 +99,7 @@ export default function Landing() {
                   Login / Sign Up
                 </Button>
               </Link>
-              <Link to="/detection">
+              <Link to="/admin">
                 <Button variant="heroOutline" size="xl">
                   <Satellite className="w-5 h-5" />
                   Admin Dashboard
